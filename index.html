@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    var lettersGuessed = [];
+    var guessesLeft = 10;
+    var wins = 0;
+
+    var computerGuess =
+    String.fromCharCode(
+        Math.round(Math.random() * 26) + 97
+    );
+
+    document.onkeydown = function(event) {
+    var keyPress = (String.fromCharCode(event.keyCode)).toLowerCase();
+
+    addLetter(keyPress);
+
+    }
+
+    function addLetter (usersKeypress) {
+
+
+    var repeatGuess = lettersGuessed.some(function(item){
+        return item === usersKeypress;
+    })
+
+    if (repeatGuess) {
+        alert(usersKeypress + " already guessed. Try again!");
+
+    } else {
+        lettersGuessed.push(usersKeypress);
+
+        showLettersGuessed();
+
+        guessMatch(usersKeypress);
+    }
+
+}
+
+    function showLettersGuessed() {
+    var tempStr = lettersGuessed.join(", ");
+    document.getElementById("playersGuess").innerHTML = tempStr;
+    }
+
+    function guessMatch (character) {
+
+    if (character === computerGuess) {
+
+        alert("You win!");
+        wins = wins + 1;
+        showWins();
+
+    } else if (guessesLeft === 0) {
+        alert("Aw man! Lets start over.");
+        resetVariables ();
+
+    } else {
+        guessesLeft = guessesLeft - 1;
+        showGuessesRemaining();
+    }
+    }
+
+    function showWins() {
+    document.getElementById("numWins").innerHTML = wins;
+    }
+
+    function showGuessesRemaining() {
+    document.getElementById("numGuesses").innerHTML = guessesLeft;
+    }
+
+    
+    function resetVariables () {
+    lettersGuessed = [];
+    guessesLeft = 10;
+    }
+
+    function startGame() {
+    showGuessesRemaining();
+    showWins();
+    }
+
+    startGame();
+    </script>  
+    <h1>The psychic game</h1>
+
+    <h2>Guess the letter that the computer is thinking.</h2>
+    
+    <p>Wins: <span id = "numWins"></span></p>
+    
+    <p>Loses:</p>
+    
+    <p>Guesses left: <span id = "numGuesses"></span></p>
+    
+    <p>Your guesses so far: <span id = "playersGuess"></span></p>
+</body>
+</html>
